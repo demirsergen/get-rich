@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GameContext = createContext();
 
@@ -15,6 +16,7 @@ const BUSINESSES = [
     baseEarning: 0.5,
     upgradeCostMultiplier: 1.15,
     upgradeEffect: 1.1,
+    maxLevel: 10,
   },
   {
     id: 2,
@@ -23,6 +25,7 @@ const BUSINESSES = [
     baseEarning: 3,
     upgradeCostMultiplier: 1.2,
     upgradeEffect: 1.15,
+    maxLevel: 50,
   },
   {
     id: 3,
@@ -31,6 +34,7 @@ const BUSINESSES = [
     baseEarning: 20,
     upgradeCostMultiplier: 1.25,
     upgradeEffect: 1.2,
+    maxLevel: 50,
   },
   {
     id: 4,
@@ -39,6 +43,7 @@ const BUSINESSES = [
     baseEarning: 100,
     upgradeCostMultiplier: 1.3,
     upgradeEffect: 1.25,
+    maxLevel: 50,
   },
   {
     id: 5,
@@ -47,6 +52,7 @@ const BUSINESSES = [
     baseEarning: 500,
     upgradeCostMultiplier: 1.35,
     upgradeEffect: 1.3,
+    maxLevel: 50,
   },
 ];
 
@@ -63,6 +69,40 @@ export const GameProvider = ({ children }) => {
       upgradeCost: b.baseCost,
     }))
   );
+
+  useEffect(() => {
+    // Load game state from AsyncStorage
+    const loadGameState = async () => {
+      const savedBalance = await AsyncStorage.getItem('balance');
+      const savedTapLevel = await AsyncStorage.getItem('tapLevel');
+      const savedBusinesses = await AsyncStorage.getItem(
+        'businesses'
+      );
+
+      if (savedBalance) setBalance(JSON.parse(savedBalance));
+      if (savedTapLevel) setTapLevel(JSON.parse(savedTapLevel));
+      if (savedBusinesses) setBusinesses(JSON.parse(savedBusinesses));
+    };
+
+    loadGameState();
+  }, []);
+
+  useEffect(() => {
+    // Save game state to AsyncStorage
+    const saveGameState = async () => {
+      await AsyncStorage.setItem('balance', JSON.stringify(balance));
+      await AsyncStorage.setItem(
+        'tapLevel',
+        JSON.stringify(tapLevel)
+      );
+      await AsyncStorage.setItem(
+        'businesses',
+        JSON.stringify(businesses)
+      );
+    };
+
+    saveGameState();
+  }, [balance, tapLevel, businesses]);
 
   const calculateTapValue = () => {
     return 1 + tapLevel * 1.8; // $1, $2.8, $4.6, $6.4, $8.2, $10

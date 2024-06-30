@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { useGameContext } from '../GameContext';
 
@@ -24,10 +25,25 @@ export default function EarningsScreen() {
   const tapValue = calculateTapValue();
   const tapUpgradeCost = getCurrentTapUpgradeCost();
 
+  const handleTap = () => {
+    increaseBalance(tapValue);
+    // Adding vibration or animation for feedback can go here
+  };
+
+  const handleUpgradeTap = () => {
+    if (balance >= tapUpgradeCost) {
+      upgradeTap();
+    } else {
+      Alert.alert(
+        'Insufficient Balance',
+        'You need more money to upgrade the tap.'
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
-        {/* <Text style={styles.title}>Earnings</Text> */}
         <Text style={styles.balance}>
           Balance: ${balance.toFixed(2)}
         </Text>
@@ -41,7 +57,10 @@ export default function EarningsScreen() {
       </View>
       <TouchableOpacity
         style={styles.clickBox}
-        onPress={() => increaseBalance(tapValue)}
+        onPress={handleTap}
+        accessibilityLabel={`Tap to earn ${tapValue.toFixed(
+          2
+        )} dollars`}
       >
         <Text style={styles.clickBoxText}>
           Tap to Earn ${tapValue.toFixed(2)}
@@ -53,8 +72,11 @@ export default function EarningsScreen() {
             styles.upgradeButton,
             balance < tapUpgradeCost && styles.disabledButton,
           ]}
-          onPress={upgradeTap}
+          onPress={handleUpgradeTap}
           disabled={balance < tapUpgradeCost}
+          accessibilityLabel={`Upgrade tap for ${tapUpgradeCost.toFixed(
+            2
+          )} dollars`}
         >
           <Text style={styles.upgradeButtonText}>
             Upgrade Tap (${tapUpgradeCost.toFixed(2)})
@@ -74,11 +96,6 @@ const styles = StyleSheet.create({
   },
   topSection: {
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 10,
   },
   balance: {
     fontSize: 24,

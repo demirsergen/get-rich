@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   Text,
@@ -27,6 +28,9 @@ export default function Business({
           ]}
           onPress={onBuy}
           disabled={!canAfford}
+          accessibilityLabel={`Buy ${
+            business.name
+          } for ${business.upgradeCost.toFixed(2)} dollars`}
         >
           <Text style={styles.buttonText}>
             Buy (${business.upgradeCost.toFixed(2)})
@@ -40,6 +44,9 @@ export default function Business({
           ]}
           onPress={onUpgrade}
           disabled={!canAfford}
+          accessibilityLabel={`Upgrade ${
+            business.name
+          } for ${business.upgradeCost.toFixed(2)} dollars`}
         >
           <Text style={styles.buttonText}>
             Upgrade (${business.upgradeCost.toFixed(2)})
@@ -49,6 +56,18 @@ export default function Business({
     </View>
   );
 }
+
+Business.propTypes = {
+  business: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    level: PropTypes.number.isRequired,
+    currentEarning: PropTypes.number.isRequired,
+    upgradeCost: PropTypes.number.isRequired,
+  }).isRequired,
+  onBuy: PropTypes.func.isRequired,
+  onUpgrade: PropTypes.func.isRequired,
+  canAfford: PropTypes.bool.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

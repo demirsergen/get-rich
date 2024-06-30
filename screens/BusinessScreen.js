@@ -1,11 +1,33 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import Business from '../components/Business';
 import { useGameContext } from '../GameContext';
 
 export default function BusinessScreen() {
   const { balance, businesses, buyBusiness, upgradeBusiness } =
     useGameContext();
+
+  const handleBuyBusiness = (id) => {
+    buyBusiness(id);
+    Alert.alert(
+      'Business Purchased',
+      'You have successfully purchased the business!'
+    );
+  };
+
+  const handleUpgradeBusiness = (id) => {
+    upgradeBusiness(id);
+    Alert.alert(
+      'Business Upgraded',
+      'You have successfully upgraded the business!'
+    );
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -16,8 +38,8 @@ export default function BusinessScreen() {
         <Business
           key={business.id}
           business={business}
-          onBuy={() => buyBusiness(business.id)}
-          onUpgrade={() => upgradeBusiness(business.id)}
+          onBuy={() => handleBuyBusiness(business.id)}
+          onUpgrade={() => handleUpgradeBusiness(business.id)}
           canAfford={balance >= business.upgradeCost}
         />
       ))}
