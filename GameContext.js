@@ -55,6 +55,38 @@ const BUSINESSES = [
     maxLevel: 50,
   },
 ];
+const HOUSES = [
+  {
+    id: 1,
+    name: 'Small Apartment',
+    price: 10000,
+    rent: 100,
+    isRented: false,
+    isOwned: false,
+  },
+  {
+    id: 2,
+    name: 'Townhouse',
+    price: 50000,
+    rent: 500,
+    isRented: false,
+    isOwned: false,
+  },
+  {
+    id: 3,
+    name: 'Luxury Villa',
+    price: 200000,
+    rent: 2000,
+    isRented: false,
+    isOwned: false,
+  },
+];
+
+const CARS = [
+  { id: 1, name: 'Used Car', price: 5000, isOwned: false },
+  { id: 2, name: 'New Car', price: 20000, isOwned: false },
+  { id: 3, name: 'Luxury Car', price: 100000, isOwned: false },
+];
 
 const TAP_UPGRADE_COST = [100, 500, 2500, 10000, 50000];
 
@@ -69,6 +101,79 @@ export const GameProvider = ({ children }) => {
       upgradeCost: b.baseCost,
     }))
   );
+  const [houses, setHouses] = useState(HOUSES);
+  const [cars, setCars] = useState(CARS);
+
+  const buyHouse = (id) => {
+    setHouses((prevHouses) =>
+      prevHouses.map((house) => {
+        if (
+          house.id === id &&
+          balance >= house.price &&
+          !house.isOwned
+        ) {
+          setBalance((prev) => prev - house.price);
+          return { ...house, isOwned: true };
+        }
+        return house;
+      })
+    );
+  };
+
+  const rentHouse = (id) => {
+    setHouses((prevHouses) =>
+      prevHouses.map((house) => {
+        if (house.id === id && !house.isRented) {
+          return { ...house, isRented: true };
+        }
+        return house;
+      })
+    );
+  };
+
+  const buyCar = (id) => {
+    setCars((prevCars) =>
+      prevCars.map((car) => {
+        if (car.id === id && balance >= car.price && !car.isOwned) {
+          setBalance((prev) => prev - car.price);
+          return { ...car, isOwned: true };
+        }
+        return car;
+      })
+    );
+  };
+
+  const sellCar = (id) => {
+    setCars((prevCars) =>
+      prevCars.map((car) => {
+        if (car.id === id && car.isOwned) {
+          setBalance((prev) => prev + car.price * 0.5);
+          return { ...car, isOwned: false };
+        }
+        return car;
+      })
+    );
+  };
+
+  // Adding the rent income to balance
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let earnings = 0;
+      businesses.forEach((business) => {
+        if (business.level > 0) {
+          earnings += business.currentEarning;
+        }
+      });
+      houses.forEach((house) => {
+        if (house.isRented) {
+          earnings += house.rent;
+        }
+      });
+      increaseBalance(earnings / 60); // Convert per-minute earnings to per-second
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [businesses, houses]);
 
   useEffect(() => {
     // Load game state from AsyncStorage
@@ -213,6 +318,12 @@ export const GameProvider = ({ children }) => {
         calculateTapValue,
         calculateTotalEarningsPerMinute,
         getCurrentTapUpgradeCost,
+        houses,
+        cars,
+        buyHouse,
+        rentHouse,
+        buyCar,
+        sellCar,
       }}
     >
       {children}

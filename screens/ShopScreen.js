@@ -1,12 +1,37 @@
-// screens/ShopScreen.js
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ShopScreen() {
+  const navigation = useNavigation();
+
+  const navigateToCarList = () => {
+    navigation.navigate('CarList');
+  };
+
+  const navigateToHouseList = () => {
+    navigation.navigate('HouseList');
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Shop</Text>
-      {/* We'll add shop items here later */}
+      <TouchableOpacity
+        style={styles.box}
+        onPress={navigateToCarList}
+      >
+        <Text style={styles.boxText}>CarMax</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.box}
+        onPress={navigateToHouseList}
+      >
+        <Text style={styles.boxText}>Realtor</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -14,11 +39,21 @@ export default function ShopScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  box: {
+    width: 200,
+    height: 100,
+    backgroundColor: '#4CAF50',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 20,
+    borderRadius: 10,
+  },
+  boxText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
