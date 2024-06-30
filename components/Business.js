@@ -1,4 +1,3 @@
-// components/Business.js
 import React from 'react';
 import {
   View,
@@ -51,28 +50,34 @@ export default function Business({
   );
 }
 
-// ... styles remain the same
-
 const styles = StyleSheet.create({
   container: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    marginBottom: 10,
   },
   name: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 5,
   },
-  upgradeButton: {
+  buyButton: {
     backgroundColor: '#4CAF50',
     padding: 10,
     borderRadius: 5,
-    marginTop: 5,
+    marginTop: 10,
+  },
+  upgradeButton: {
+    backgroundColor: '#2196F3',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
   },
   disabledButton: {
     backgroundColor: '#ccc',
   },
-  upgradeButtonText: {
+  buttonText: {
     color: 'white',
     textAlign: 'center',
   },

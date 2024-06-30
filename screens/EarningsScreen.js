@@ -1,4 +1,3 @@
-// screens/EarningsScreen.js
 import React from 'react';
 import {
   View,
@@ -15,16 +14,20 @@ export default function EarningsScreen() {
   const {
     balance,
     increaseBalance,
-    calculateClickValue,
+    calculateTapValue,
     calculateTotalEarningsPerMinute,
+    tapLevel,
+    upgradeTap,
+    getCurrentTapUpgradeCost,
   } = useGameContext();
 
-  const clickValue = calculateClickValue();
+  const tapValue = calculateTapValue();
+  const tapUpgradeCost = getCurrentTapUpgradeCost();
 
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
-        <Text style={styles.title}>Earnings</Text>
+        {/* <Text style={styles.title}>Earnings</Text> */}
         <Text style={styles.balance}>
           Balance: ${balance.toFixed(2)}
         </Text>
@@ -32,20 +35,35 @@ export default function EarningsScreen() {
           Earnings per minute: $
           {calculateTotalEarningsPerMinute().toFixed(2)}
         </Text>
+        <Text style={styles.tapLevel}>
+          Tap Level: {tapLevel + 1}/6
+        </Text>
       </View>
       <TouchableOpacity
         style={styles.clickBox}
-        onPress={() => increaseBalance(clickValue)}
+        onPress={() => increaseBalance(tapValue)}
       >
         <Text style={styles.clickBoxText}>
-          Tap to Earn ${clickValue.toFixed(2)}
+          Tap to Earn ${tapValue.toFixed(2)}
         </Text>
       </TouchableOpacity>
+      {tapUpgradeCost !== null && (
+        <TouchableOpacity
+          style={[
+            styles.upgradeButton,
+            balance < tapUpgradeCost && styles.disabledButton,
+          ]}
+          onPress={upgradeTap}
+          disabled={balance < tapUpgradeCost}
+        >
+          <Text style={styles.upgradeButtonText}>
+            Upgrade Tap (${tapUpgradeCost.toFixed(2)})
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
-
-// ... styles remain the same
 
 const styles = StyleSheet.create({
   container: {
@@ -68,6 +86,10 @@ const styles = StyleSheet.create({
   },
   hourlyEarnings: {
     fontSize: 18,
+    marginBottom: 10,
+  },
+  tapLevel: {
+    fontSize: 18,
     marginBottom: 20,
   },
   clickBox: {
@@ -77,11 +99,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    marginBottom: 20,
   },
   clickBoxText: {
     color: 'white',
     fontSize: 32,
     fontWeight: 'bold',
+  },
+  upgradeButton: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  disabledButton: {
+    backgroundColor: '#ccc',
+  },
+  upgradeButtonText: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center',
   },
 });

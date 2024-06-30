@@ -1,13 +1,11 @@
-// App.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import InvestingScreen from './screens/InvestingScreen';
-import BusinessScreen from './screens/BusinessScreen';
-import EarningsScreen from './screens/EarningsScreen';
-import ProfileScreen from './screens/ProfileScreen';
 import { GameProvider } from './GameContext';
+import EarningsScreen from './screens/EarningsScreen';
+import BusinessScreen from './screens/BusinessScreen';
+import InvestingScreen from './screens/InvestingScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +13,7 @@ export default function App() {
   return (
     <GameProvider>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="Earnings">
+        <Tab.Navigator>
           <Tab.Screen name="Earnings" component={EarningsScreen} />
           <Tab.Screen name="Business" component={BusinessScreen} />
           <Tab.Screen name="Investing" component={InvestingScreen} />

@@ -1,4 +1,3 @@
-// GameContext.js
 import React, {
   createContext,
   useState,
@@ -12,48 +11,50 @@ const BUSINESSES = [
   {
     id: 1,
     name: 'Lemonade Stand',
-    baseCost: 5,
-    baseEarning: 0.05,
+    baseCost: 50,
+    baseEarning: 0.5,
     upgradeCostMultiplier: 1.15,
     upgradeEffect: 1.1,
   },
   {
     id: 2,
     name: 'Newspaper Route',
-    baseCost: 100,
-    baseEarning: 0.5,
+    baseCost: 500,
+    baseEarning: 3,
     upgradeCostMultiplier: 1.2,
     upgradeEffect: 1.15,
   },
   {
     id: 3,
     name: 'Car Wash',
-    baseCost: 1000,
-    baseEarning: 5,
+    baseCost: 5000,
+    baseEarning: 20,
     upgradeCostMultiplier: 1.25,
     upgradeEffect: 1.2,
   },
   {
     id: 4,
     name: 'Pizza Shop',
-    baseCost: 10000,
-    baseEarning: 50,
+    baseCost: 50000,
+    baseEarning: 100,
     upgradeCostMultiplier: 1.3,
     upgradeEffect: 1.25,
   },
   {
     id: 5,
     name: 'Tech Startup',
-    baseCost: 100000,
+    baseCost: 500000,
     baseEarning: 500,
     upgradeCostMultiplier: 1.35,
     upgradeEffect: 1.3,
   },
 ];
 
+const TAP_UPGRADE_COST = [100, 500, 2500, 10000, 50000];
+
 export const GameProvider = ({ children }) => {
-  const [balance, setBalance] = useState(5);
-  const [totalEarnings, setTotalEarnings] = useState(0);
+  const [balance, setBalance] = useState(10);
+  const [tapLevel, setTapLevel] = useState(0);
   const [businesses, setBusinesses] = useState(
     BUSINESSES.map((b) => ({
       ...b,
@@ -63,19 +64,24 @@ export const GameProvider = ({ children }) => {
     }))
   );
 
-  const calculateClickValue = () => {
-    return Math.min(
-      0.1 + Math.floor(totalEarnings / 1000) * 0.01,
-      1.0
-    );
+  const calculateTapValue = () => {
+    return 1 + tapLevel * 1.8; // $1, $2.8, $4.6, $6.4, $8.2, $10
+  };
+
+  const getCurrentTapUpgradeCost = () => {
+    return tapLevel < 5 ? TAP_UPGRADE_COST[tapLevel] : null;
   };
 
   const increaseBalance = (amount) => {
-    setBalance((prev) => {
-      const newBalance = Math.round((prev + amount) * 100) / 100;
-      setTotalEarnings((prevTotal) => prevTotal + amount);
-      return newBalance;
-    });
+    setBalance((prev) => Math.round((prev + amount) * 100) / 100);
+  };
+
+  const upgradeTap = () => {
+    const cost = getCurrentTapUpgradeCost();
+    if (cost && balance >= cost) {
+      setBalance((prev) => prev - cost);
+      setTapLevel((prev) => prev + 1);
+    }
   };
 
   const buyBusiness = (id) => {
@@ -141,8 +147,8 @@ export const GameProvider = ({ children }) => {
           earnings += business.currentEarning;
         }
       });
-      increaseBalance(earnings); // Convert per-minute earnings to per-second
-    }, 5000);
+      increaseBalance(earnings / 60); // Convert per-minute earnings to per-second
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [businesses]);
@@ -159,11 +165,14 @@ export const GameProvider = ({ children }) => {
       value={{
         balance,
         businesses,
+        tapLevel,
         buyBusiness,
         upgradeBusiness,
+        upgradeTap,
         increaseBalance,
-        calculateClickValue,
+        calculateTapValue,
         calculateTotalEarningsPerMinute,
+        getCurrentTapUpgradeCost,
       }}
     >
       {children}

@@ -1,4 +1,3 @@
-// screens/BusinessScreen.js
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import Business from '../components/Business';
@@ -25,10 +24,6 @@ export default function BusinessScreen() {
     </ScrollView>
   );
 }
-
-// ... styles remain the same
-
-// ... styles remain the same
 
 const styles = StyleSheet.create({
   container: {
