@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { useGameContext } from '../GameContext';
+import { formatNumber } from '../utility/formatNumber';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -45,7 +46,7 @@ export default function EarningsScreen() {
     <View style={styles.container}>
       <View style={styles.topSection}>
         <Text style={styles.balance}>
-          Balance: ${balance.toFixed(2)}
+          Balance: ${formatNumber(balance)}
         </Text>
         <Text style={styles.hourlyEarnings}>
           Earnings per minute: $
@@ -74,12 +75,12 @@ export default function EarningsScreen() {
           ]}
           onPress={handleUpgradeTap}
           disabled={balance < tapUpgradeCost}
-          accessibilityLabel={`Upgrade tap for ${tapUpgradeCost.toFixed(
-            2
+          accessibilityLabel={`Upgrade tap for ${formatNumber(
+            tapUpgradeCost
           )} dollars`}
         >
           <Text style={styles.upgradeButtonText}>
-            Upgrade Tap (${tapUpgradeCost.toFixed(2)})
+            Upgrade Tap (${formatNumber(tapUpgradeCost)})
           </Text>
         </TouchableOpacity>
       )}
