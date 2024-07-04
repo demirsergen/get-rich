@@ -16,7 +16,6 @@ const BUSINESSES = [
     baseEarning: 0.5,
     upgradeCostMultiplier: 1.15,
     upgradeEffect: 1.1,
-    maxLevel: 10,
   },
   {
     id: 2,
@@ -25,7 +24,6 @@ const BUSINESSES = [
     baseEarning: 3,
     upgradeCostMultiplier: 1.2,
     upgradeEffect: 1.15,
-    maxLevel: 50,
   },
   {
     id: 3,
@@ -34,7 +32,6 @@ const BUSINESSES = [
     baseEarning: 20,
     upgradeCostMultiplier: 1.25,
     upgradeEffect: 1.2,
-    maxLevel: 50,
   },
   {
     id: 4,
@@ -43,7 +40,6 @@ const BUSINESSES = [
     baseEarning: 100,
     upgradeCostMultiplier: 1.3,
     upgradeEffect: 1.25,
-    maxLevel: 50,
   },
   {
     id: 5,
@@ -52,7 +48,6 @@ const BUSINESSES = [
     baseEarning: 500,
     upgradeCostMultiplier: 1.35,
     upgradeEffect: 1.3,
-    maxLevel: 50,
   },
 ];
 const HOUSES = [
@@ -261,7 +256,8 @@ export const GameProvider = ({ children }) => {
         if (
           business.id === id &&
           balance >= business.upgradeCost &&
-          business.level > 0
+          business.level > 0 &&
+          business.level <= 50
         ) {
           setBalance(
             (prev) =>
