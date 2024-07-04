@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { formatNumber } from '../utility/formatNumber';
 
 export default function Business({
   business,
@@ -33,7 +34,7 @@ export default function Business({
           } for ${business.upgradeCost.toFixed(2)} dollars`}
         >
           <Text style={styles.buttonText}>
-            Buy (${business.upgradeCost.toFixed(2)})
+            Buy (${formatNumber(business.upgradeCost)})
           </Text>
         </TouchableOpacity>
       ) : (
@@ -49,7 +50,7 @@ export default function Business({
           } for ${business.upgradeCost.toFixed(2)} dollars`}
         >
           <Text style={styles.buttonText}>
-            Upgrade (${business.upgradeCost.toFixed(2)})
+            Upgrade (${formatNumber(business.upgradeCost)})
           </Text>
         </TouchableOpacity>
       )}
