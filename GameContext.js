@@ -14,80 +14,90 @@ const BUSINESSES = [
     name: 'Lemonade Stand',
     baseCost: 50,
     baseEarning: 0.5,
-    upgradeCostMultiplier: 1.1, // Further reduced from 1.12
-    upgradeEffect: 1.14, // Further increased from 1.12
+    upgradeCostMultiplier: 1.15, // Further reduced from 1.12
+    upgradeEffect: 1.4, // Further increased from 1.12
+    level: 0,
   },
   {
     id: 2,
     name: 'Newspaper Route',
     baseCost: 500,
     baseEarning: 3,
-    upgradeCostMultiplier: 1.12, // Further reduced from 1.15
-    upgradeEffect: 1.19, // Further increased from 1.17
+    upgradeCostMultiplier: 1.18, // Further reduced from 1.15
+    upgradeEffect: 1.45, // Further increased from 1.17
+    level: 0,
   },
   {
     id: 3,
     name: 'Car Wash',
     baseCost: 5000,
     baseEarning: 20,
-    upgradeCostMultiplier: 1.14, // Further reduced from 1.18
-    upgradeEffect: 1.24, // Further increased from 1.22
+    upgradeCostMultiplier: 1.21, // Further reduced from 1.18
+    upgradeEffect: 1.5, // Further increased from 1.22
+    level: 0,
   },
   {
     id: 4,
     name: 'Pizza Shop',
     baseCost: 50000,
     baseEarning: 100,
-    upgradeCostMultiplier: 1.16, // Further reduced from 1.22
-    upgradeEffect: 1.29, // Further increased from 1.27
+    upgradeCostMultiplier: 1.24, // Further reduced from 1.22
+    upgradeEffect: 1.55, // Further increased from 1.27
+    level: 0,
   },
   {
     id: 5,
     name: 'Tech Startup',
     baseCost: 500000,
     baseEarning: 500,
-    upgradeCostMultiplier: 1.18, // Further reduced from 1.25
-    upgradeEffect: 1.34, // Further increased from 1.32
+    upgradeCostMultiplier: 1.27, // Further reduced from 1.25
+    upgradeEffect: 1.6, // Further increased from 1.32
+    level: 0,
   },
   {
     id: 6,
     name: 'Coffee Shop Chain',
     baseCost: 2500000,
     baseEarning: 2000,
-    upgradeCostMultiplier: 1.2, // Further reduced from 1.28
-    upgradeEffect: 1.39, // Further increased from 1.37
+    upgradeCostMultiplier: 1.3, // Further reduced from 1.28
+    upgradeEffect: 1.65, // Further increased from 1.37
+    level: 0,
   },
   {
     id: 7,
     name: 'Real Estate Agency',
     baseCost: 10000000,
     baseEarning: 7500,
-    upgradeCostMultiplier: 1.22, // Further reduced from 1.32
-    upgradeEffect: 1.44, // Further increased from 1.42
+    upgradeCostMultiplier: 1.33, // Further reduced from 1.32
+    upgradeEffect: 1.7, // Further increased from 1.42
+    level: 0,
   },
   {
     id: 8,
     name: 'Shopping Mall',
     baseCost: 50000000,
     baseEarning: 30000,
-    upgradeCostMultiplier: 1.24, // Further reduced from 1.35
-    upgradeEffect: 1.49, // Further increased from 1.47
+    upgradeCostMultiplier: 1.36, // Further reduced from 1.35
+    upgradeEffect: 1.75, // Further increased from 1.47
+    level: 0,
   },
   {
     id: 9,
     name: 'Space Tourism Company',
     baseCost: 250000000,
     baseEarning: 150000,
-    upgradeCostMultiplier: 1.26, // Further reduced from 1.38
-    upgradeEffect: 1.54, // Further increased from 1.52
+    upgradeCostMultiplier: 1.39, // Further reduced from 1.38
+    upgradeEffect: 1.8, // Further increased from 1.52
+    level: 0,
   },
   {
     id: 10,
     name: 'Interplanetary Mining Corp',
     baseCost: 1000000000,
     baseEarning: 750000,
-    upgradeCostMultiplier: 1.28, // Further reduced from 1.42
-    upgradeEffect: 1.59, // Further increased from 1.57
+    upgradeCostMultiplier: 1.42, // Further reduced from 1.42
+    upgradeEffect: 1.85, // Further increased from 1.57
+    level: 0,
   },
 ];
 const HOUSES = [
@@ -140,7 +150,7 @@ export const GameProvider = ({ children }) => {
   const [cars, setCars] = useState(CARS);
 
   const resetGame = () => {
-    setBalance(10);
+    setBalance(20);
     setTapLevel(0);
     setBusinesses(
       BUSINESSES.map((b) => ({
@@ -323,7 +333,7 @@ export const GameProvider = ({ children }) => {
           business.id === id &&
           balance >= business.upgradeCost &&
           business.level > 0 &&
-          business.level <= 50
+          business.level < 30
         ) {
           setBalance(
             (prev) =>
