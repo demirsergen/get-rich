@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import Business from '../components/Business';
 import { useGameContext } from '../GameContext';
+import { formatNumber } from '../utility/formatNumber';
 
 export default function BusinessScreen() {
   const { balance, businesses, buyBusiness, upgradeBusiness } =
@@ -32,7 +33,7 @@ export default function BusinessScreen() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.balance}>
-        Balance: ${balance.toFixed(2)}
+        Balance: ${formatNumber(balance)}
       </Text>
       {businesses.map((business) => (
         <Business
