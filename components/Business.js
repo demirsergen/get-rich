@@ -18,9 +18,14 @@ export default function Business({
     <View style={styles.container}>
       <Text style={styles.name}>{business.name}</Text>
       <Text>Level: {business.level}</Text>
-      <Text>
-        Earning: ${business.currentEarning.toFixed(2)}/minute
-      </Text>
+      {business.level == 0 ? (
+        <Text>Earning: $0/minute</Text>
+      ) : (
+        <Text>
+          Earning: ${formatNumber(business.currentEarning)}/minute
+        </Text>
+      )}
+
       {business.level === 0 ? (
         <TouchableOpacity
           style={[
@@ -44,14 +49,18 @@ export default function Business({
             !canAfford && styles.disabledButton,
           ]}
           onPress={onUpgrade}
-          disabled={!canAfford}
+          disabled={!canAfford || business.level == 30}
           accessibilityLabel={`Upgrade ${
             business.name
           } for ${business.upgradeCost.toFixed(2)} dollars`}
         >
-          <Text style={styles.buttonText}>
-            Upgrade (${formatNumber(business.upgradeCost)})
-          </Text>
+          {business.level == 30 ? (
+            <Text style={styles.buttonTextMaxed}>Maxed</Text>
+          ) : (
+            <Text style={styles.buttonText}>
+              Upgrade (${formatNumber(business.upgradeCost)})
+            </Text>
+          )}
         </TouchableOpacity>
       )}
     </View>
@@ -99,6 +108,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+    textAlign: 'center',
+  },
+  buttonTextMaxed: {
+    color: 'red',
     textAlign: 'center',
   },
 });
